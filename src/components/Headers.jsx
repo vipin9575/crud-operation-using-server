@@ -10,13 +10,9 @@ const Headers = ({
   editContact,
   selectedContact,
 }) => {
-  // const [show, setShow] = useState(false);
-
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
   return (
     <>
-      <Navbar className="bg-body-tertiary shadow-sm">
+      <Navbar className="bg-danger-subtle bg-body-tertiary shadow-sm position-sticky top-0 z-3">
         <Container>
           <Navbar.Brand className="fw-bold fs-3">Contact Manager</Navbar.Brand>
           <Button variant="dark ms-auto" onClick={handleShow}>
