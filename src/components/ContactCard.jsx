@@ -6,7 +6,13 @@ import { FaRegEdit } from "react-icons/fa";
 import { FaRegFrownOpen } from "react-icons/fa";
 
 const ContactCard = (props) => {
-  const { contactData, removeContact, setSelectedContact, handleShow } = props;
+  const {
+    contactData,
+    removeContact,
+    setSelectedContact,
+    handleShow,
+    loading,
+  } = props;
 
   const handleRemoveContact = (id) => {
     removeContact(id);
@@ -14,7 +20,7 @@ const ContactCard = (props) => {
 
   const renderContact = contactData.map((contact) => {
     return (
-      <Card key={contact.name} className="my-3 bg-primary-subtle">
+      <Card key={contact.id} className="my-3 bg-primary-subtle">
         <Card.Body className="d-flex align-items-center gap-4">
           <CgProfile size={60} />
           <div>
@@ -40,16 +46,29 @@ const ContactCard = (props) => {
   });
   return (
     <Container className="w-50">
-      {contactData.length > 0 ? (
-        renderContact
-      ) : (
+      {loading ? (
         <div className="d-flex flex-column align-items-center gap-3 justify-content-center mt-5">
           <code className="fs-2">
             {" "}
-            <FaRegFrownOpen /> No contacts found
+            <FaRegFrownOpen /> Loading...
           </code>
-          <pre>Please add a contact by clicking on the Add Contact button</pre>
         </div>
+      ) : (
+        <>
+          {contactData.length > 0 ? (
+            renderContact
+          ) : (
+            <div className="d-flex flex-column align-items-center gap-3 justify-content-center mt-5">
+              <code className="fs-2">
+                {" "}
+                <FaRegFrownOpen /> No contacts found
+              </code>
+              <pre>
+                Please add a contact by clicking on the Add Contact button
+              </pre>
+            </div>
+          )}
+        </>
       )}
     </Container>
   );

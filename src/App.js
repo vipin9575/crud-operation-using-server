@@ -8,28 +8,34 @@ function App() {
   const [show, setShow] = useState(false);
   const [contactData, setContactData] = useState([]);
   const [selectedContact, setSelectedContact] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const retrieveContacts = async () => {
+    setLoading(true);
     const response = await api.get("/contacts");
+    if (response.status === 200) setLoading(false);
     return response.data;
   };
 
   const addContact = async (contact) => {
+    setLoading(true);
     const payload = {
       id: uuidv4(),
       ...contact,
     };
 
     const response = await api.post("/contacts", payload);
+    if(response.status === 201) setLoading(false);
     setContactData((prevContacts) => [...prevContacts, response.data]);
   };
 
   const editContact = async (contact) => {
-    console.log(contact);
+    setLoading(true);
     const response = await api.put(`/contacts/${contact.id}`, contact);
+    if(response.status === 200) setLoading(false);
     setContactData((prevContacts) =>
       prevContacts.map((contact) =>
         contact.id === response.data.id ? response.data : contact
@@ -38,7 +44,10 @@ function App() {
   };
 
   const removeContact = async (id) => {
-    await api.delete(`/contacts/${id}`);
+    setLoading(true);
+    await api.delete(`/contacts/${id}`).then((response) => {
+      setLoading(false);
+    });
     setContactData((prevContacts) =>
       prevContacts.filter((contact) => contact.id !== id)
     );
@@ -67,6 +76,7 @@ function App() {
         removeContact={removeContact}
         setSelectedContact={setSelectedContact}
         handleShow={handleShow}
+        loading={loading}
       />
     </div>
   );
